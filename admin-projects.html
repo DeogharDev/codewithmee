@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Projects | Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #1a202c; color: #e2e8f0;}
+        .logo-font { font-family: 'JetBrains Mono', monospace; }
+        .gold-text { color: #D4AF37; }
+        .sidebar { background-color: #2d3748; }
+        .sidebar-link { transition: all 0.2s ease-in-out; }
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #D4AF37;
+            color: #1a202c;
+            transform: translateX(5px);
+        }
+        .sidebar-link.active i, .sidebar-link:hover i { color: #1a202c; }
+        .form-input, .form-textarea, .form-file { background-color: #4a5568; border: 1px solid #718096; }
+        .form-input:focus, .form-textarea:focus { border-color: #D4AF37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); outline: none; }
+        .btn-primary { background-color: #D4AF37; color: #1a202c; font-weight: 700; }
+        .btn-primary:hover:not(:disabled) { background-color: #c09b30; }
+        .btn-primary:disabled { background-color: #a0aec0; cursor: not-allowed; }
+        .btn-secondary { background-color: #4A5568; color: #e2e8f0; }
+        .btn-danger { background-color: #c53030; }
+        .btn-danger:hover { background-color: #9b2c2c; }
+    </style>
+</head>
+<body class="flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 min-h-screen sidebar p-4 fixed">
+        <h1 class="text-2xl font-bold text-center logo-font gold-text mb-10">CodeWithMee</h1>
+        <nav class="space-y-2">
+            <a href="admin-dashboard.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-tachometer-alt w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Dashboard</span></a>
+            <a href="admin-courses.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-book w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Courses</span></a>
+            <a href="admin-projects.html" class="sidebar-link active flex items-center p-3 rounded-lg"><i class="fas fa-project-diagram w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Projects</span></a>
+            <a href="admin-gallery.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-images w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Gallery</span></a>
+            <a href="admin-quiz.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-question-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Quiz</span></a>
+            <a href="admin-about.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-info-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">About Page</span></a>
+            <a href="admin-links.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
+            <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
+            <a href="admin-accounts.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-user-shield w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Admin Accounts</span></a>
+        </nav>
+        <div class="absolute bottom-4 left-4 right-4">
+             <button id="logout-btn" class="w-full flex items-center p-3 rounded-lg bg-red-800 text-red-100 hover:bg-red-700"><i class="fas fa-sign-out-alt w-6 text-center"></i><span class="ml-4 font-semibold">Logout</span></button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 flex-1 p-10">
+        <h2 class="text-3xl font-bold mb-8">Manage Projects</h2>
+        
+        <div class="bg-gray-800 p-6 rounded-lg mb-8">
+            <h3 class="text-xl font-bold mb-4 gold-text">Add New Project</h3>
+            <p class="text-sm text-gray-400 mb-4">Upload your project file to a service like Google Drive or WeTransfer, and paste the public shareable link below.</p>
+            <form id="project-form" class="space-y-4">
+                <div>
+                    <label for="project-title" class="block text-sm font-medium text-gray-400">Project Title</label>
+                    <input type="text" id="project-title" class="w-full mt-1 p-2 rounded-md form-input" required>
+                </div>
+                <div>
+                    <label for="project-description" class="block text-sm font-medium text-gray-400">Description</label>
+                    <textarea id="project-description" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea>
+                </div>
+                <div>
+                    <label for="project-url" class="block text-sm font-medium text-gray-400">Project Download URL</label>
+                    <input type="url" id="project-url" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://your-download-link.com/file" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" id="submit-btn" class="px-4 py-2 rounded-md btn-primary">Add Project</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-bold mb-4 gold-text">Uploaded Projects</h3>
+            <div id="projects-list" class="space-y-4">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </main>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
+            authDomain: "codewithmee-7cb9d.firebaseapp.com",
+            projectId: "codewithmee-7cb9d",
+            storageBucket: "codewithmee-7cb9d.appspot.com",
+            messagingSenderId: "19515490554",
+            appId: "1:19515490554:web:57bb1609cad1d61524c943",
+            measurementId: "G-3YJ8K05RPH"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, (user) => { if (!user) window.location.href = './admin.html'; });
+
+        const projectForm = document.getElementById('project-form');
+        const projectsList = document.getElementById('projects-list');
+        
+        // Add Project
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const projectData = {
+                title: document.getElementById('project-title').value,
+                description: document.getElementById('project-description').value,
+                fileURL: document.getElementById('project-url').value,
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "projects"), projectData);
+                alert('Project added successfully!');
+                projectForm.reset();
+            } catch (error) {
+                console.error("Error adding project:", error);
+                alert("Failed to add project.");
+            }
+        });
+
+        // Fetch & Display Projects
+        onSnapshot(query(collection(db, "projects"), orderBy("createdAt", "desc")), (snapshot) => {
+            projectsList.innerHTML = '';
+            if (snapshot.empty) {
+                projectsList.innerHTML = '<p class="text-gray-500">No projects added yet.</p>';
+                return;
+            }
+            snapshot.forEach((doc) => {
+                const project = doc.data();
+                const projectEl = document.createElement('div');
+                projectEl.className = 'bg-gray-700 p-4 rounded-lg flex justify-between items-center';
+                projectEl.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-100">${project.title}</h4>
+                        <p class="text-sm text-gray-400">${project.description}</p>
+                    </div>
+                    <div>
+                        <a href="${project.fileURL}" target="_blank" class="text-sm px-3 py-1 rounded-md btn-secondary mr-2">View Link</a>
+                        <button class="text-sm px-3 py-1 rounded-md btn-danger delete-btn" data-id="${doc.id}">Delete</button>
+                    </div>
+                `;
+                projectsList.appendChild(projectEl);
+            });
+        });
+        
+        // Delete Project
+        projectsList.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                if (!confirm('Are you sure you want to delete this project?')) return;
+                const docId = e.target.dataset.id;
+                await deleteDoc(doc(db, "projects", docId));
+                alert('Project deleted successfully.');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => { signOut(auth).then(() => { window.location.href = './admin.html'; }); });
+    </script>
+</body>
+</html>

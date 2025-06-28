@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | CodeWithMee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #101010;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23181818' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .logo-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .gold-text {
+            color: #D4AF37;
+        }
+        .form-container {
+            background-color: rgba(24, 24, 24, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .form-input {
+             background-color: #282828;
+             border: 1px solid #333;
+        }
+        .form-input:focus {
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-gray-300">
+
+    <div class="w-full max-w-md p-8 space-y-8 border rounded-lg shadow-lg form-container border-gray-700">
+        <div>
+            <h1 class="text-3xl font-bold text-center logo-font gold-text">CodeWithMee</h1>
+            <h2 class="mt-2 text-2xl font-bold text-center text-gray-100">Admin Panel Login</h2>
+        </div>
+
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label for="email" class="text-sm font-medium text-gray-400">Email Address</label>
+                <input id="email" name="email" type="email" autocomplete="email" required
+                    class="w-full px-3 py-2 mt-1 text-gray-100 rounded-md form-input">
+            </div>
+            <div>
+                <label for="password" class="text-sm font-medium text-gray-400">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required
+                    class="w-full px-3 py-2 mt-1 text-gray-100 rounded-md form-input">
+            </div>
+            <button type="submit"
+                class="w-full px-4 py-2 font-semibold text-gray-900 transition-colors bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-gray-900">
+                Sign In
+            </button>
+        </form>
+        
+        <div id="message-box" class="hidden p-3 text-center text-sm rounded-md"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
+            authDomain: "codewithmee-7cb9d.firebaseapp.com",
+            projectId: "codewithmee-7cb9d",
+            storageBucket: "codewithmee-7cb9d.appspot.com",
+            messagingSenderId: "19515490554",
+            appId: "1:19515490554:web:57bb1609cad1d61524c943",
+            measurementId: "G-3YJ8K05RPH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginForm = document.getElementById('login-form');
+        const messageBox = document.getElementById('message-box');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
+            showMessage('Signing in...', 'info');
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    showMessage('Login Successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                         window.location.href = './admin-dashboard.html';
+                    }, 1500);
+                })
+                .catch((error) => {
+                    let friendlyMessage = "Incorrect email or password. Please try again.";
+                    showMessage(friendlyMessage, 'error');
+                });
+        });
+
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = 'p-3 text-center text-sm rounded-md';
+            if (type === 'success') messageBox.classList.add('bg-green-800', 'text-green-100');
+            else if (type === 'error') messageBox.classList.add('bg-red-800', 'text-red-100');
+            else messageBox.classList.add('bg-blue-800', 'text-blue-100');
+            messageBox.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

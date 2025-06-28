@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Quiz | Sunil Kumar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --gold-alpha: rgba(212, 175, 55, 0.1); --red: #ff7272; --red-alpha: rgba(255, 114, 114, 0.1); --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; --fz-lg: 32px; --fz-md: 20px; --fz-sm: 16px; --fz-xs: 14px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--dark-bg); background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23181818' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); color: var(--text-secondary); font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; font-size: var(--fz-sm); line-height: 1.7; }
+        body.light-mode { --dark-bg: #F5F5F5; --medium-bg: #FFFFFF; --light-bg: #E9E9E9; --gold: #B8860B; --gold-alpha: rgba(184, 134, 11, 0.1); --red: #D32F2F; --red-alpha: rgba(211, 47, 47, 0.1); --text-primary: #121212; --text-secondary: #555555; background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); }
+        main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        a { text-decoration: none; color: var(--gold); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 0 50px; height: 100px; position: fixed; width: 100%; top: 0; z-index: 20; background-color: rgba(18, 18, 18, 0.5); backdrop-filter: blur(10px); }
+        body.light-mode header { background-color: rgba(245, 245, 245, 0.7); }
+        .logo { font-family: var(--font-mono); color: var(--gold); font-size: 28px; z-index: 21; }
+        body:not(.light-mode) .logo { text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+        .logo span { color: var(--text-primary); }
+        .desktop-nav { display: flex; align-items: center; }
+        .desktop-nav ol { display: flex; align-items: center; list-style: none; }
+        .desktop-nav ol li { margin: 0 20px; font-family: var(--font-mono); font-size: var(--fz-xs); }
+        .desktop-nav ol li a { color: var(--text-primary); transition: color 0.3s; font-weight: 500; }
+        .desktop-nav ol li a:hover, .desktop-nav ol li a.active { color: var(--gold); }
+        .theme-switch-wrapper { display: flex; align-items: center; margin-left: 20px; }
+        .theme-switch { position: relative; display: inline-block; width: 44px; height: 24px; margin: 0 10px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--light-bg); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: var(--text-primary); transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--gold); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .hamburger-menu, .mobile-nav { display: none; }
+        .quiz-container { background-color: var(--medium-bg); border-radius: 8px; box-shadow: 0 10px 30px -15px #000; width: 100%; max-width: 800px; padding: 40px; margin-top: 100px; margin-bottom: 40px; }
+        .quiz-container h1 { font-size: var(--fz-lg); color: var(--text-primary); margin-bottom: 20px; text-align: center; }
+        #question { font-size: var(--fz-md); color: var(--text-primary); margin-bottom: 30px; min-height: 50px; }
+        .answer-buttons, .category-buttons { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .btn { background-color: var(--light-bg); border: 1px solid #333; border-radius: 4px; padding: 15px; color: var(--text-secondary); font-family: var(--font-sans); font-size: var(--fz-sm); cursor: pointer; text-align: center; transition: all 0.2s ease; width: 100%; }
+        body.light-mode .btn { border-color: #ccc; }
+        .btn:hover:not([disabled]) { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+        .btn.correct { background-color: var(--gold-alpha); border-color: var(--gold); color: var(--gold); }
+        .btn.incorrect { background-color: var(--red-alpha); border-color: var(--red); color: var(--red); }
+        .btn:disabled { cursor: not-allowed; }
+        #controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+        .control-btn { padding: 0.75rem 1.5rem; border: 1px solid var(--gold); border-radius: 4px; color: var(--gold); background-color: transparent; font-family: var(--font-mono); font-size: var(--fz-xs); cursor: pointer; transition: all 0.25s ease; }
+        .control-btn:hover { background-color: var(--gold-alpha); }
+        .hide { display: none; }
+        .start-container, .results-container { text-align: center; }
+        .results-container p { font-size: var(--fz-md); margin-bottom: 20px; }
+        .results-container .score { font-size: var(--fz-lg); color: var(--gold); font-weight: 700; margin-bottom: 30px; }
+        #progress-text { color: var(--text-secondary); font-family: var(--font-mono); }
+        footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
+        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+        .social-links a { display: inline-block; padding: 10px; font-size: 22px; color: var(--text-secondary); transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
+        @media (min-width: 600px) { .category-buttons { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 768px) {
+            header { padding: 0 25px; } .desktop-nav { display: none; }
+            .hamburger-menu { display: flex; flex-direction: column; justify-content: space-between; width: 30px; height: 21px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 21; }
+            .hamburger-menu span { width: 30px; height: 3px; background: var(--text-primary); border-radius: 10px; }
+            .mobile-nav { display: flex; flex-direction: column; justify-content: center; background: var(--medium-bg); height: 100vh; text-align: center; padding: 2rem; position: fixed; top: 0; right: 0; transition: transform 0.3s ease-in-out; transform: translateX(100%); width: min(75vw, 400px); z-index: 19; }
+            .mobile-nav.open { transform: translateX(0); }
+            .mobile-nav ol { list-style: none; } .mobile-nav ol li { margin-bottom: 2rem; } .mobile-nav ol li a { font-size: var(--fz-md); color: var(--text-primary); font-weight: 700; }
+            .mobile-nav .theme-switch-wrapper { justify-content: center; margin-top: 2rem; }
+            .quiz-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="color: var(--gold);">CodeWith<span>Mee</span></a></div>
+        <nav class="desktop-nav">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="quiz.html" class="active">Quiz</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ol>
+            <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
+        </nav>
+        <button class="hamburger-menu"><span /><span /><span /></button>
+    </header>
+    <nav class="mobile-nav">
+        <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ol>
+        <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="mobile-theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
+    </nav>
+    <main>
+        <div class="quiz-container" id="quiz-box">
+            <div id="start-container"><h1 >Technical Knowledge Quiz</h1><p id="loading-text" style="margin-bottom: 30px; text-align: center;">Loading categories...</p><div id="category-buttons" class="category-buttons"></div></div>
+            <div id="question-container" class="hide"><h2 id="question"></h2><div id="answer-buttons" class="answer-buttons"></div><div id="controls"><p id="progress-text"></p><button id="next-btn" class="control-btn hide">Next</button></div></div>
+            <div id="results-container" class="hide">
+                <h1>Quiz Complete!</h1><p>Your final score is:</p><p class="score" id="score-text"></p>
+                <button id="restart-btn" class="control-btn">Choose Another Category</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="social-links" id="social-links-container">
+            <a id="github-link" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a id="instagram-link" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a id="x-link" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a id="facebook-link" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a id="email-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <a id="youtube-link" target="_blank" aria-label="YouTube" class="hidden"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>Designed & Built with Precision by Sunil Kumar</p>
+    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
+            authDomain: "codewithmee-7cb9d.firebaseapp.com",
+            projectId: "codewithmee-7cb9d",
+            storageBucket: "codewithmee-7cb9d.appspot.com",
+            messagingSenderId: "19515490554",
+            appId: "1:19515490554:web:57bb1609cad1d61524c943",
+            measurementId: "G-3YJ8K05RPH"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const nextButton = document.getElementById('next-btn'), restartButton = document.getElementById('restart-btn'), startContainer = document.getElementById('start-container'), categoryButtonsContainer = document.getElementById('category-buttons'), questionContainer = document.getElementById('question-container'), resultsContainer = document.getElementById('results-container'), questionElement = document.getElementById('question'), answerButtonsElement = document.getElementById('answer-buttons'), scoreTextElement = document.getElementById('score-text'), progressTextElement = document.getElementById('progress-text'), loadingText = document.getElementById('loading-text');
+        let allQuestions = {};
+        let currentQuestions = [], currentQuestionIndex = 0, score = 0;
+        
+        onSnapshot(query(collection(db, "quizQuestions")), (snapshot) => {
+            allQuestions = {}; // Reset
+            snapshot.forEach((doc) => {
+                const q = doc.data();
+                if (!allQuestions[q.category]) { allQuestions[q.category] = []; }
+                allQuestions[q.category].push(q);
+            });
+            initQuiz();
+        });
+
+        function initQuiz() { 
+            categoryButtonsContainer.innerHTML = ''; 
+            if(Object.keys(allQuestions).length > 0) {
+                loadingText.textContent = 'Choose a category to begin.';
+                for (const category in allQuestions) { 
+                    const button = document.createElement('button'); 
+                    button.innerText = category; 
+                    button.classList.add('btn'); 
+                    button.addEventListener('click', () => startQuiz(category)); 
+                    categoryButtonsContainer.appendChild(button); 
+                } 
+            } else {
+                loadingText.textContent = 'No quiz categories found. Please add questions in the admin panel.';
+            }
+            startContainer.classList.remove('hide'); 
+            questionContainer.classList.add('hide'); 
+            resultsContainer.classList.add('hide'); 
+            nextButton.addEventListener('click', () => { currentQuestionIndex++; setNextQuestion(); }); 
+            restartButton.addEventListener('click', initQuiz); 
+        }
+
+        function startQuiz(category) { 
+            startContainer.classList.add('hide'); 
+            questionContainer.classList.remove('hide'); 
+            currentQuestions = allQuestions[category].sort(() => Math.random() - 0.5); 
+            currentQuestionIndex = 0; score = 0; 
+            setNextQuestion(); 
+        }
+        function setNextQuestion() { 
+            resetState(); 
+            if (currentQuestionIndex < currentQuestions.length) { 
+                showQuestion(currentQuestions[currentQuestionIndex]); 
+                progressTextElement.innerText = `Question ${currentQuestionIndex + 1} / ${currentQuestions.length}`; 
+            } else { 
+                showResults(); 
+            } 
+        }
+        function showQuestion(qData) { 
+            questionElement.innerText = qData.question; 
+            const shuffledAnswers = [...qData.options].sort(() => Math.random() - 0.5);
+            shuffledAnswers.forEach(optionText => { 
+                const button = document.createElement('button'); 
+                button.innerText = optionText; 
+                button.classList.add('btn'); 
+                if (optionText === qData.options[qData.correctAnswer - 1]) { button.dataset.correct = true; } 
+                button.addEventListener('click', selectAnswer, { once: true }); 
+                answerButtonsElement.appendChild(button); 
+            }); 
+        }
+        function resetState() { nextButton.classList.add('hide'); answerButtonsElement.innerHTML = ''; }
+        function selectAnswer(e) { 
+            const correct = e.target.dataset.correct === "true"; 
+            if (correct) score++; 
+            Array.from(answerButtonsElement.children).forEach(button => { 
+                if (button.dataset.correct === "true") { button.classList.add('correct'); }
+                else { button.classList.add('incorrect'); }
+                button.disabled = true; 
+            }); 
+            if (currentQuestions.length <= currentQuestionIndex + 1) { nextButton.innerText = "Show Results"; } 
+            nextButton.classList.remove('hide'); 
+        }
+        function showResults() { 
+            questionContainer.classList.add('hide'); 
+            resultsContainer.classList.remove('hide'); 
+            scoreTextElement.innerText = `${score} / ${currentQuestions.length}`; 
+            nextButton.innerText = "Next"; 
+        }
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+        const body = document.body;
+        function applyTheme(theme) { body.classList.toggle('light-mode', theme === 'light'); themeToggles.forEach(toggle => {if(toggle) toggle.checked = (theme === 'light')}); }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(savedTheme);
+        themeToggles.forEach(toggle => { if(toggle) toggle.addEventListener('change', () => { const newTheme = toggle.checked ? 'light' : 'dark'; localStorage.setItem('theme', newTheme); applyTheme(newTheme); }); });
+        const hamburger = document.querySelector('.hamburger-menu');
+        const mobileNav = document.querySelector('.mobile-nav');
+        hamburger.addEventListener('click', () => { mobileNav.classList.toggle('open'); });
+
+        async function loadSocialLinks() {
+            const linksDocRef = doc(db, "siteContent", "socialLinks");
+            const linksSnap = await getDoc(linksDocRef);
+            if (linksSnap.exists()) {
+                const links = linksSnap.data();
+                document.getElementById('github-link').href = links.github || '#';
+                document.getElementById('instagram-link').href = links.instagram || '#';
+                document.getElementById('x-link').href = links.x || '#';
+                document.getElementById('facebook-link').href = links.facebook || '#';
+                document.getElementById('email-link').href = `mailto:${links.email || ''}`;
+                const ytLink = document.getElementById('youtube-link');
+                if(links.youtube) {
+                    ytLink.href = links.youtube;
+                    ytLink.classList.remove('hidden');
+                } else {
+                    ytLink.classList.add('hidden');
+                }
+            }
+        }
+        loadSocialLinks();
+    </script>
+</body>
+</html>

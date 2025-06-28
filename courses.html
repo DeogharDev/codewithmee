@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Courses | Sunil Kumar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; --fz-lg: 32px; --fz-md: 20px; --fz-sm: 16px; --fz-xs: 14px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--dark-bg); background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23181818' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); color: var(--text-secondary); font-family: var(--font-sans); line-height: 1.7; font-size: var(--fz-sm); }
+        body.light-mode { --dark-bg: #F5F5F5; --medium-bg: #FFFFFF; --light-bg: #E9E9E9; --gold: #B8860B; --text-primary: #121212; --text-secondary: #555555; background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); }
+        main { padding: 0 150px; }
+        a { text-decoration: none; color: var(--gold); }
+        .section-heading { display: flex; align-items: center; margin-bottom: 40px; font-size: clamp(26px, 5vw, var(--fz-lg)); width: 100%; white-space: nowrap; color: var(--text-primary); }
+        body:not(.light-mode) .section-heading, body:not(.light-mode) .logo, body:not(.light-mode) #modal-title { text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+        .section-heading::after { content: ""; display: block; width: 300px; height: 1px; margin-left: 20px; background-color: var(--light-bg); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 0 50px; height: 100px; position: fixed; width: 100%; top: 0; z-index: 20; background-color: rgba(18, 18, 18, 0.5); backdrop-filter: blur(10px); }
+        body.light-mode header { background-color: rgba(245, 245, 245, 0.7); }
+        .logo { font-family: var(--font-mono); color: var(--gold); font-size: 28px; z-index: 21; }
+        .logo span { color: var(--text-primary); }
+        .desktop-nav { display: flex; align-items: center; }
+        .desktop-nav ol { display: flex; align-items: center; list-style: none; }
+        .desktop-nav ol li { margin: 0 20px; font-family: var(--font-mono); font-size: var(--fz-xs); }
+        .desktop-nav ol li a { color: var(--text-primary); transition: color 0.3s; font-weight: 500; }
+        .desktop-nav ol li a:hover, .desktop-nav ol li a.active { color: var(--gold); }
+        .theme-switch-wrapper { display: flex; align-items: center; margin-left: 20px; }
+        .theme-switch { position: relative; display: inline-block; width: 44px; height: 24px; margin: 0 10px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--light-bg); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: var(--text-primary); transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--gold); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .hamburger-menu, .mobile-nav { display: none; }
+        .content-section { padding-top: 150px; max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .course-card { background-color: var(--medium-bg); border: 1px solid var(--light-bg); border-radius: 8px; padding: 25px; text-align: center; transition: all 0.3s ease; cursor: pointer; }
+        .course-card:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 10px 30px -15px #000; }
+        .course-card .course-title { font-family: var(--font-sans); font-size: var(--fz-md); color: var(--text-primary); font-weight: 700; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background-color: var(--medium-bg); padding: 40px; border-radius: 8px; border: 1px solid var(--light-bg); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(-20px); transition: transform 0.4s ease; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-button { position: absolute; top: 15px; right: 15px; font-size: 24px; color: var(--text-secondary); cursor: pointer; transition: color 0.3s; }
+        .close-button:hover { color: var(--gold); }
+        #modal-title { color: var(--gold); font-size: var(--fz-lg); margin-bottom: 15px; }
+        #modal-duration, #modal-fee { font-family: var(--font-mono); font-size: var(--fz-xs); background-color: var(--light-bg); padding: 10px; border-radius: 4px; display: inline-block; margin-top: 10px; }
+        footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
+        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+        .social-links a { display: inline-block; padding: 10px; font-size: 22px; color: var(--text-secondary); transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
+        @media (max-width: 1080px) { main { padding: 0 100px; } }
+        @media (max-width: 768px) {
+            main { padding: 0 25px; } .content-section { padding-top: 120px; }
+            .desktop-nav { display: none; }
+            .hamburger-menu { display: flex; flex-direction: column; justify-content: space-between; width: 30px; height: 21px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 21; }
+            .hamburger-menu span { width: 30px; height: 3px; background: var(--text-primary); border-radius: 10px; }
+            .mobile-nav { display: flex; flex-direction: column; justify-content: center; background: var(--medium-bg); height: 100vh; text-align: center; padding: 2rem; position: fixed; top: 0; right: 0; transition: transform 0.3s ease-in-out; transform: translateX(100%); width: min(75vw, 400px); z-index: 19; }
+            .mobile-nav.open { transform: translateX(0); }
+            .mobile-nav ol { list-style: none; } .mobile-nav ol li { margin-bottom: 2rem; } .mobile-nav ol li a { font-size: var(--fz-md); color: var(--text-primary); font-weight: 700; }
+            .mobile-nav .theme-switch-wrapper { justify-content: center; margin-top: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="color: var(--gold);">CodeWith<span>Mee</span></a></div>
+        <nav class="desktop-nav">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html" class="active">Courses</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ol>
+            <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
+        </nav>
+        <button class="hamburger-menu"><span /><span /><span /></button>
+    </header>
+    <nav class="mobile-nav">
+        <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ol>
+        <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="mobile-theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
+    </nav>
+    <main>
+        <section class="content-section">
+            <h2 class="section-heading">Our Professional Courses</h2>
+            <div class="course-grid" id="course-grid">
+                 <p>Loading Courses...</p>
+            </div>
+        </section>
+    </main>
+    <div class="modal-overlay" id="course-detail-modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-modal-btn">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <div id="modal-duration"><strong>Duration:</strong> <span></span></div>
+            <div id="modal-fee"><strong>Fee:</strong> <span></span></div>
+        </div>
+    </div>
+    <footer>
+        <div class="social-links" id="social-links-container">
+            <a id="github-link" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a id="instagram-link" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a id="x-link" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a id="facebook-link" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a id="email-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <a id="youtube-link" target="_blank" aria-label="YouTube" class="hidden"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>Designed & Built with Precision by Sunil Kumar</p>
+    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
+            authDomain: "codewithmee-7cb9d.firebaseapp.com",
+            projectId: "codewithmee-7cb9d",
+            storageBucket: "codewithmee-7cb9d.appspot.com",
+            messagingSenderId: "19515490554",
+            appId: "1:19515490554:web:57bb1609cad1d61524c943",
+            measurementId: "G-3YJ8K05RPH"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const courseGrid = document.getElementById('course-grid');
+        const modal = document.getElementById('course-detail-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        let allCourses = [];
+
+        onSnapshot(query(collection(db, "courses"), orderBy("createdAt", "desc")), (snapshot) => {
+            allCourses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderCourses();
+        });
+
+        function renderCourses() {
+            courseGrid.innerHTML = '';
+            if (allCourses.length === 0) {
+                courseGrid.innerHTML = `<p class="col-span-full text-center">No courses available. Please add some from the admin panel.</p>`;
+                return;
+            }
+            allCourses.forEach(course => {
+                const card = document.createElement('a');
+                card.href = "#";
+                card.className = 'course-card';
+                card.dataset.courseId = course.id;
+                card.innerHTML = `<h3 class="course-title">${course.title}</h3><p class="text-sm">${course.description.substring(0, 80)}...</p>`;
+                courseGrid.appendChild(card);
+                card.addEventListener('click', (e) => { e.preventDefault(); showModal(course.id); });
+            });
+        }
+        
+        function showModal(courseId) {
+            const course = allCourses.find(c => c.id === courseId);
+            document.getElementById('modal-title').textContent = course.title;
+            document.getElementById('modal-description').textContent = course.description;
+            document.getElementById('modal-duration').querySelector('span').textContent = course.duration;
+            document.getElementById('modal-fee').querySelector('span').textContent = `₹${course.fee}`;
+            modal.classList.add('active');
+        }
+        function hideModal() { modal.classList.remove('active'); }
+        closeModalBtn.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) { hideModal(); } });
+
+        async function loadSocialLinks() {
+            const linksDocRef = doc(db, "siteContent", "socialLinks");
+            const linksSnap = await getDoc(linksDocRef);
+            if (linksSnap.exists()) {
+                const links = linksSnap.data();
+                document.getElementById('github-link').href = links.github || '#';
+                document.getElementById('instagram-link').href = links.instagram || '#';
+                document.getElementById('x-link').href = links.x || '#';
+                document.getElementById('facebook-link').href = links.facebook || '#';
+                document.getElementById('email-link').href = `mailto:${links.email || ''}`;
+                const ytLink = document.getElementById('youtube-link');
+                if(links.youtube) {
+                    ytLink.href = links.youtube;
+                    ytLink.classList.remove('hidden');
+                } else {
+                    ytLink.classList.add('hidden');
+                }
+            }
+        }
+            
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+        const body = document.body;
+        function applyTheme(theme) { body.classList.toggle('light-mode', theme === 'light'); themeToggles.forEach(toggle => {if(toggle) toggle.checked = (theme === 'light')}); }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(savedTheme);
+        themeToggles.forEach(toggle => { if(toggle) toggle.addEventListener('change', () => { const newTheme = toggle.checked ? 'light' : 'dark'; localStorage.setItem('theme', newTheme); applyTheme(newTheme); }); });
+        
+        const hamburger = document.querySelector('.hamburger-menu');
+        const mobileNav = document.querySelector('.mobile-nav');
+        hamburger.addEventListener('click', () => { mobileNav.classList.toggle('open'); });
+
+        loadSocialLinks();
+    </script>
+</body>
+</html>
