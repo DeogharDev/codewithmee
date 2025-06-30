@@ -56,30 +56,18 @@
             <h3 class="text-xl font-bold mb-4 gold-text">Add New Question</h3>
             <form id="quiz-form" class="space-y-4">
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-400">Category (e.g., C++, Python, Java)</label>
-                    <input type="text" id="category" class="w-full mt-1 p-2 rounded-md form-input" placeholder="Enter a new or existing category" required>
+                    <label for="category" class="block text-sm font-medium text-gray-400">Category</label>
+                    <input type="text" id="category" class="w-full mt-1 p-2 rounded-md form-input" placeholder="e.g., C++, Python, Java" required>
                 </div>
                 <div>
                     <label for="question" class="block text-sm font-medium text-gray-400">Question</label>
                     <textarea id="question" rows="2" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="option1" class="block text-sm font-medium text-gray-400">Option 1</label>
-                        <input type="text" id="option1" class="w-full mt-1 p-2 rounded-md form-input" required>
-                    </div>
-                     <div>
-                        <label for="option2" class="block text-sm font-medium text-gray-400">Option 2</label>
-                        <input type="text" id="option2" class="w-full mt-1 p-2 rounded-md form-input" required>
-                    </div>
-                     <div>
-                        <label for="option3" class="block text-sm font-medium text-gray-400">Option 3</label>
-                        <input type="text" id="option3" class="w-full mt-1 p-2 rounded-md form-input" required>
-                    </div>
-                     <div>
-                        <label for="option4" class="block text-sm font-medium text-gray-400">Option 4</label>
-                        <input type="text" id="option4" class="w-full mt-1 p-2 rounded-md form-input" required>
-                    </div>
+                    <div><label for="option1" class="block text-sm font-medium text-gray-400">Option 1</label><input type="text" id="option1" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                    <div><label for="option2" class="block text-sm font-medium text-gray-400">Option 2</label><input type="text" id="option2" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                    <div><label for="option3" class="block text-sm font-medium text-gray-400">Option 3</label><input type="text" id="option3" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                    <div><label for="option4" class="block text-sm font-medium text-gray-400">Option 4</label><input type="text" id="option4" class="w-full mt-1 p-2 rounded-md form-input" required></div>
                 </div>
                  <div>
                     <label for="correct-answer" class="block text-sm font-medium text-gray-400">Correct Answer</label>
@@ -90,6 +78,10 @@
                         <option value="4">Option 4</option>
                     </select>
                 </div>
+                <div>
+                    <label for="explanation" class="block text-sm font-medium text-gray-400">Explanation for Correct Answer</label>
+                    <textarea id="explanation" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" placeholder="Explain why this answer is correct." required></textarea>
+                </div>
                 <div class="flex justify-end">
                     <button type="submit" id="submit-btn" class="px-4 py-2 rounded-md btn-primary">Add Question</button>
                 </div>
@@ -98,9 +90,7 @@
         
         <div class="bg-gray-800 p-6 rounded-lg">
             <h3 class="text-xl font-bold mb-4 gold-text">Question Bank</h3>
-            <div id="questions-list" class="space-y-2">
-                <!-- Questions will be loaded here -->
-            </div>
+            <div id="questions-list" class="space-y-2"></div>
         </div>
     </main>
     
@@ -109,15 +99,7 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
-            authDomain: "codewithmee-7cb9d.firebaseapp.com",
-            projectId: "codewithmee-7cb9d",
-            storageBucket: "codewithmee-7cb9d.appspot.com",
-            messagingSenderId: "19515490554",
-            appId: "1:19515490554:web:57bb1609cad1d61524c943",
-            measurementId: "G-3YJ8K05RPH"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc", authDomain: "codewithmee-7cb9d.firebaseapp.com", projectId: "codewithmee-7cb9d", storageBucket: "codewithmee-7cb9d.appspot.com", messagingSenderId: "19515490554", appId: "1:19515490554:web:57bb1609cad1d61524c943", measurementId: "G-3YJ8K05RPH" };
         
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -140,6 +122,7 @@
                     document.getElementById('option4').value.trim()
                 ],
                 correctAnswer: parseInt(document.getElementById('correct-answer').value),
+                explanation: document.getElementById('explanation').value.trim(), // Added explanation
                 createdAt: serverTimestamp()
             };
             try {
