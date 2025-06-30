@@ -21,6 +21,11 @@
         .btn-primary:hover:not(:disabled) { background-color: #c09b30; }
         .btn-secondary { background-color: #4a5568; }
         .btn-secondary:hover { background-color: #2d3748; }
+        .btn-danger { background-color: #c53030; }
+        /* Custom Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background-color: #2d3748; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; }
     </style>
 </head>
 <body class="flex">
@@ -34,6 +39,7 @@
             <a href="admin-projects.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-project-diagram w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Projects</span></a>
             <a href="admin-gallery.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-images w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Gallery</span></a>
             <a href="admin-quiz.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-question-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Quiz</span></a>
+            <a href="admin-blog.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-blog w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Blog</span></a>
             <a href="admin-about.html" class="sidebar-link active flex items-center p-3 rounded-lg"><i class="fas fa-info-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">About Page</span></a>
             <a href="admin-links.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
             <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
@@ -47,42 +53,17 @@
     <!-- Main Content -->
     <main class="ml-64 flex-1 p-10">
         <h2 class="text-3xl font-bold mb-8">Manage About Page Content</h2>
-        
         <div class="bg-gray-800 p-6 rounded-lg">
             <form id="about-form" class="space-y-4">
-                <div>
-                    <label for="paragraph1" class="block text-sm font-medium text-gray-400">Paragraph 1</label>
-                    <textarea id="paragraph1" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea>
-                </div>
-                <div>
-                    <label for="paragraph2" class="block text-sm font-medium text-gray-400">Paragraph 2</label>
-                    <textarea id="paragraph2" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea>
-                </div>
-                 <div>
-                    <label for="paragraph3" class="block text-sm font-medium text-gray-400">Paragraph 3 (Tech Focus)</label>
-                    <textarea id="paragraph3" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea>
-                </div>
-                 <div>
-                    <label for="skills" class="block text-sm font-medium text-gray-400">Skills (Comma separated, e.g., C++, Python, HTML)</label>
-                    <input type="text" id="skills" class="w-full mt-1 p-2 rounded-md form-input" required>
-                </div>
+                <div><label for="paragraph1" class="block text-sm font-medium text-gray-400">Paragraph 1</label><textarea id="paragraph1" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea></div>
+                <div><label for="paragraph2" class="block text-sm font-medium text-gray-400">Paragraph 2</label><textarea id="paragraph2" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea></div>
+                <div><label for="paragraph3" class="block text-sm font-medium text-gray-400">Paragraph 3 (Tech Focus)</label><textarea id="paragraph3" rows="3" class="w-full mt-1 p-2 rounded-md form-textarea" required></textarea></div>
+                <div><label for="skills" class="block text-sm font-medium text-gray-400">Skills (Comma separated, e.g., C++, Python, HTML)</label><input type="text" id="skills" class="w-full mt-1 p-2 rounded-md form-input" required></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="photo-url-1" class="block text-sm font-medium text-gray-400">Slideshow Image 1 URL</label>
-                        <input type="url" id="photo-url-1" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/...">
-                    </div>
-                     <div>
-                        <label for="photo-url-2" class="block text-sm font-medium text-gray-400">Slideshow Image 2 URL</label>
-                        <input type="url" id="photo-url-2" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/...">
-                    </div>
-                     <div>
-                        <label for="photo-url-3" class="block text-sm font-medium text-gray-400">Slideshow Image 3 URL</label>
-                        <input type="url" id="photo-url-3" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/...">
-                    </div>
-                     <div>
-                        <label for="photo-url-4" class="block text-sm font-medium text-gray-400">Slideshow Image 4 URL</label>
-                        <input type="url" id="photo-url-4" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/...">
-                    </div>
+                    <div><label for="photo-url-1" class="block text-sm font-medium text-gray-400">Slideshow Image 1 URL</label><input type="url" id="photo-url-1" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/..."></div>
+                    <div><label for="photo-url-2" class="block text-sm font-medium text-gray-400">Slideshow Image 2 URL</label><input type="url" id="photo-url-2" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/..."></div>
+                    <div><label for="photo-url-3" class="block text-sm font-medium text-gray-400">Slideshow Image 3 URL</label><input type="url" id="photo-url-3" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/..."></div>
+                    <div><label for="photo-url-4" class="block text-sm font-medium text-gray-400">Slideshow Image 4 URL</label><input type="url" id="photo-url-4" class="w-full mt-1 p-2 rounded-md form-input" placeholder="https://i.ibb.co/..."></div>
                 </div>
                 <div class="flex justify-end space-x-4">
                     <button type="button" id="recover-btn" class="px-4 py-2 rounded-md btn-secondary">Recover Data</button>
@@ -92,21 +73,25 @@
             <div id="status-message" class="mt-4 text-center font-semibold"></div>
         </div>
     </main>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="text-lg font-bold text-white mb-4">Are you sure?</h3>
+            <p class="text-sm text-gray-400 mb-6">This will discard your current changes and restore the last saved data.</p>
+            <div class="flex justify-center gap-4">
+                <button id="cancel-recovery" class="px-4 py-2 rounded-md btn-secondary">Cancel</button>
+                <button id="confirm-recovery" class="px-4 py-2 rounded-md btn-danger">Yes, Recover</button>
+            </div>
+        </div>
+    </div>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
-            authDomain: "codewithmee-7cb9d.firebaseapp.com",
-            projectId: "codewithmee-7cb9d",
-            storageBucket: "codewithmee-7cb9d.appspot.com",
-            messagingSenderId: "19515490554",
-            appId: "1:19515490554:web:57bb1609cad1d61524c943",
-            measurementId: "G-3YJ8K05RPH"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc", authDomain: "codewithmee-7cb9d.firebaseapp.com", projectId: "codewithmee-7cb9d", storageBucket: "codewithmee-7cb9d.appspot.com", messagingSenderId: "19515490554", appId: "1:19515490554:web:57bb1609cad1d61524c943", measurementId: "G-3YJ8K05RPH" };
         
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -117,9 +102,11 @@
         const aboutForm = document.getElementById('about-form');
         const statusMessage = document.getElementById('status-message');
         const recoverBtn = document.getElementById('recover-btn');
+        const modal = document.getElementById('confirmation-modal');
+        const confirmBtn = document.getElementById('confirm-recovery');
+        const cancelBtn = document.getElementById('cancel-recovery');
 
         const aboutContentRef = doc(db, "siteContent", "aboutPage");
-        let lastLoadedData = {};
 
         function populateForm(data) {
             document.getElementById('paragraph1').value = data.p1 || '';
@@ -137,8 +124,7 @@
             try {
                 const docSnap = await getDoc(aboutContentRef);
                 if (docSnap.exists()) {
-                    lastLoadedData = docSnap.data();
-                    populateForm(lastLoadedData);
+                    populateForm(docSnap.data());
                 } else {
                     console.log("No 'aboutPage' document! It will be created on first save.");
                 }
@@ -147,29 +133,17 @@
                 statusMessage.style.color = '#F44336';
             }
         }
+        
         loadAboutContent();
 
         aboutForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const skillsArray = document.getElementById('skills').value.split(',').map(skill => skill.trim()).filter(skill => skill);
-            const photoURLs = [
-                document.getElementById('photo-url-1').value.trim(),
-                document.getElementById('photo-url-2').value.trim(),
-                document.getElementById('photo-url-3').value.trim(),
-                document.getElementById('photo-url-4').value.trim()
-            ].filter(url => url);
-
-            const content = {
-                p1: document.getElementById('paragraph1').value,
-                p2: document.getElementById('paragraph2').value,
-                p3: document.getElementById('paragraph3').value,
-                skills: skillsArray,
-                photoURLs: photoURLs
-            };
+            const photoURLs = [ document.getElementById('photo-url-1').value.trim(), document.getElementById('photo-url-2').value.trim(), document.getElementById('photo-url-3').value.trim(), document.getElementById('photo-url-4').value.trim() ].filter(url => url);
+            const content = { p1: document.getElementById('paragraph1').value, p2: document.getElementById('paragraph2').value, p3: document.getElementById('paragraph3').value, skills: skillsArray, photoURLs: photoURLs };
 
             try {
                 await setDoc(aboutContentRef, content, { merge: true });
-                lastLoadedData = content;
                 statusMessage.textContent = 'Content updated successfully!';
                 statusMessage.style.color = '#4CAF50';
             } catch (error) {
@@ -179,16 +153,15 @@
             }
         });
 
-        recoverBtn.addEventListener('click', () => {
-            if (Object.keys(lastLoadedData).length > 0) {
-                if(confirm("Are you sure you want to discard your current changes and recover the last saved data?")) {
-                    populateForm(lastLoadedData);
-                    statusMessage.textContent = 'Data recovered from last save.';
-                    statusMessage.style.color = '#D4AF37';
-                }
-            } else {
-                alert("No data has been saved yet to recover from.");
-            }
+        recoverBtn.addEventListener('click', () => { modal.classList.add('active'); });
+        
+        cancelBtn.addEventListener('click', () => { modal.classList.remove('active'); });
+
+        confirmBtn.addEventListener('click', async () => {
+            await loadAboutContent();
+            statusMessage.textContent = 'Data recovered from last save.';
+            statusMessage.style.color = '#D4AF37';
+            modal.classList.remove('active');
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => { signOut(auth).then(() => { window.location.href = './admin.html'; }); });
