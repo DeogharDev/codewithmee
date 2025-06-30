@@ -9,10 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --gold-alpha: rgba(212, 175, 55, 0.1); --red: #ff7272; --red-alpha: rgba(255, 114, 114, 0.1); --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; --fz-lg: 32px; --fz-md: 20px; --fz-sm: 16px; --fz-xs: 14px; }
+        :root { --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --gold-alpha: rgba(212, 175, 55, 0.1); --red: #ff7272; --red-alpha: rgba(255, 114, 114, 0.1); --green: #50fa7b; --green-alpha: rgba(80, 250, 123, 0.1); --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; --fz-lg: 32px; --fz-md: 20px; --fz-sm: 16px; --fz-xs: 14px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--dark-bg); background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23181818' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); color: var(--text-secondary); font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; font-size: var(--fz-sm); line-height: 1.7; }
-        body.light-mode { --dark-bg: #F5F5F5; --medium-bg: #FFFFFF; --light-bg: #E9E9E9; --gold: #B8860B; --gold-alpha: rgba(184, 134, 11, 0.1); --red: #D32F2F; --red-alpha: rgba(211, 47, 47, 0.1); --text-primary: #121212; --text-secondary: #555555; background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); }
+        body.light-mode { --dark-bg: #F5F5F5; --medium-bg: #FFFFFF; --light-bg: #E9E9E9; --gold: #B8860B; --gold-alpha: rgba(184, 134, 11, 0.1); --red: #D32F2F; --red-alpha: rgba(211, 47, 47, 0.1); --green: #2e7d32; --green-alpha: rgba(46, 125, 50, 0.1); --text-primary: #121212; --text-secondary: #555555; background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E"); }
         main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
         a { text-decoration: none; color: var(--gold); }
         header { display: flex; justify-content: space-between; align-items: center; padding: 0 50px; height: 100px; position: fixed; width: 100%; top: 0; z-index: 20; background-color: rgba(18, 18, 18, 0.5); backdrop-filter: blur(10px); }
@@ -40,7 +40,7 @@
         .btn { background-color: var(--light-bg); border: 1px solid #333; border-radius: 4px; padding: 15px; color: var(--text-secondary); font-family: var(--font-sans); font-size: var(--fz-sm); cursor: pointer; text-align: center; transition: all 0.2s ease; width: 100%; }
         body.light-mode .btn { border-color: #ccc; }
         .btn:hover:not([disabled]) { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
-        .btn.correct { background-color: var(--gold-alpha); border-color: var(--gold); color: var(--gold); }
+        .btn.correct { background-color: var(--green-alpha); border-color: var(--green); color: var(--green); }
         .btn.incorrect { background-color: var(--red-alpha); border-color: var(--red); color: var(--red); }
         .btn:disabled { cursor: not-allowed; }
         #controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
@@ -48,8 +48,17 @@
         .control-btn:hover { background-color: var(--gold-alpha); }
         .hide { display: none; }
         .start-container, .results-container { text-align: center; }
-        .results-container p { font-size: var(--fz-md); margin-bottom: 20px; }
-        .results-container .score { font-size: var(--fz-lg); color: var(--gold); font-weight: 700; margin-bottom: 30px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; text-align: center; }
+        .summary-item { background-color: var(--light-bg); padding: 1rem; border-radius: 8px; }
+        .summary-item h4 { font-size: var(--fz-sm); color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .summary-item p { font-size: var(--fz-lg); font-weight: bold; color: var(--text-primary); }
+        .breakdown-list { margin-top: 2rem; text-align: left; }
+        .breakdown-item { background-color: var(--light-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid; }
+        .breakdown-item.correct { border-color: var(--green); }
+        .breakdown-item.incorrect { border-color: var(--red); }
+        .breakdown-item p { font-size: var(--fz-sm); margin-bottom: 0.5rem; }
+        .breakdown-item .question-text { font-weight: bold; color: var(--text-primary); }
+        .breakdown-item .explanation-text { font-size: var(--fz-xs); color: var(--text-secondary); margin-top: 10px; border-top: 1px solid var(--light-bg); padding-top: 10px; }
         #progress-text { color: var(--text-secondary); font-family: var(--font-mono); }
         footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
         .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
@@ -102,8 +111,10 @@
             <div id="start-container"><h1 >Technical Knowledge Quiz</h1><p id="loading-text" style="margin-bottom: 30px; text-align: center;">Loading categories...</p><div id="category-buttons" class="category-buttons"></div></div>
             <div id="question-container" class="hide"><h2 id="question"></h2><div id="answer-buttons" class="answer-buttons"></div><div id="controls"><p id="progress-text"></p><button id="next-btn" class="control-btn hide">Next</button></div></div>
             <div id="results-container" class="hide">
-                <h1>Quiz Complete!</h1><p>Your final score is:</p><p class="score" id="score-text"></p>
-                <button id="restart-btn" class="control-btn">Choose Another Category</button>
+                <h1>Quiz Complete!</h1>
+                <div id="summary-grid" class="summary-grid"></div>
+                <div id="breakdown-list" class="breakdown-list"></div>
+                <button id="restart-btn" class="control-btn mt-8">Choose Another Category</button>
             </div>
         </div>
     </main>
@@ -134,12 +145,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const nextButton = document.getElementById('next-btn'), restartButton = document.getElementById('restart-btn'), startContainer = document.getElementById('start-container'), categoryButtonsContainer = document.getElementById('category-buttons'), questionContainer = document.getElementById('question-container'), resultsContainer = document.getElementById('results-container'), questionElement = document.getElementById('question'), answerButtonsElement = document.getElementById('answer-buttons'), scoreTextElement = document.getElementById('score-text'), progressTextElement = document.getElementById('progress-text'), loadingText = document.getElementById('loading-text');
+        const nextButton = document.getElementById('next-btn'), restartButton = document.getElementById('restart-btn'), startContainer = document.getElementById('start-container'), categoryButtonsContainer = document.getElementById('category-buttons'), questionContainer = document.getElementById('question-container'), resultsContainer = document.getElementById('results-container'), questionElement = document.getElementById('question'), answerButtonsElement = document.getElementById('answer-buttons'), progressTextElement = document.getElementById('progress-text'), loadingText = document.getElementById('loading-text');
+        
         let allQuestions = {};
-        let currentQuestions = [], currentQuestionIndex = 0, score = 0;
+        let currentQuestions = [], currentQuestionIndex = 0, quizResults = [];
         
         onSnapshot(query(collection(db, "quizQuestions")), (snapshot) => {
-            allQuestions = {}; // Reset
+            allQuestions = {}; 
             snapshot.forEach((doc) => {
                 const q = doc.data();
                 if (!allQuestions[q.category]) { allQuestions[q.category] = []; }
@@ -173,7 +185,8 @@
             startContainer.classList.add('hide'); 
             questionContainer.classList.remove('hide'); 
             currentQuestions = allQuestions[category].sort(() => Math.random() - 0.5); 
-            currentQuestionIndex = 0; score = 0; 
+            currentQuestionIndex = 0; 
+            quizResults = [];
             setNextQuestion(); 
         }
         function setNextQuestion() { 
@@ -193,14 +206,24 @@
                 button.innerText = optionText; 
                 button.classList.add('btn'); 
                 if (optionText === qData.options[qData.correctAnswer - 1]) { button.dataset.correct = true; } 
-                button.addEventListener('click', selectAnswer, { once: true }); 
+                button.addEventListener('click', (e) => selectAnswer(e, qData), { once: true }); 
                 answerButtonsElement.appendChild(button); 
             }); 
         }
         function resetState() { nextButton.classList.add('hide'); answerButtonsElement.innerHTML = ''; }
-        function selectAnswer(e) { 
-            const correct = e.target.dataset.correct === "true"; 
-            if (correct) score++; 
+        
+        function selectAnswer(e, questionData) { 
+            const selectedButton = e.target;
+            const isCorrect = selectedButton.dataset.correct === "true"; 
+            
+            quizResults.push({
+                question: questionData.question,
+                selectedAnswer: selectedButton.innerText,
+                correctAnswer: questionData.options[questionData.correctAnswer - 1],
+                explanation: questionData.explanation,
+                isCorrect: isCorrect
+            });
+
             Array.from(answerButtonsElement.children).forEach(button => { 
                 if (button.dataset.correct === "true") { button.classList.add('correct'); }
                 else { button.classList.add('incorrect'); }
@@ -211,16 +234,42 @@
         }
         function showResults() { 
             questionContainer.classList.add('hide'); 
-            resultsContainer.classList.remove('hide'); 
-            scoreTextElement.innerText = `${score} / ${currentQuestions.length}`; 
-            nextButton.innerText = "Next"; 
+            resultsContainer.classList.remove('hide');
+            const total = currentQuestions.length;
+            const correctCount = quizResults.filter(r => r.isCorrect).length;
+            const wrongCount = total - correctCount;
+            const percentage = total > 0 ? ((correctCount / total) * 100).toFixed(1) : 0;
+
+            const summaryGrid = document.getElementById('summary-grid');
+            summaryGrid.innerHTML = `
+                <div class="summary-item"><h4 class="font-bold">Total Questions</h4><p>${total}</p></div>
+                <div class="summary-item"><h4 class="font-bold text-green-500">Correct</h4><p>${correctCount}</p></div>
+                <div class="summary-item"><h4 class="font-bold text-red-500">Wrong</h4><p>${wrongCount}</p></div>
+                <div class="summary-item"><h4 class="font-bold gold-text">Score %</h4><p>${percentage}%</p></div>
+            `;
+
+            const breakdownList = document.getElementById('breakdown-list');
+            breakdownList.innerHTML = '<h3>Your Answers Breakdown:</h3>';
+            quizResults.forEach(result => {
+                const item = document.createElement('div');
+                item.className = `breakdown-item ${result.isCorrect ? 'correct' : 'incorrect'}`;
+                item.innerHTML = `
+                    <p class="question-text">${result.question}</p>
+                    <p>Your Answer: <span class="${result.isCorrect ? 'text-green-400' : 'text-red-400'}">${result.selectedAnswer}</span></p>
+                    ${!result.isCorrect ? `<p>Correct Answer: <span class="text-green-400">${result.correctAnswer}</span></p>` : ''}
+                    <p class="explanation-text"><strong>Explanation:</strong> ${result.explanation}</p>
+                `;
+                breakdownList.appendChild(item);
+            });
         }
+
         const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
         const body = document.body;
         function applyTheme(theme) { body.classList.toggle('light-mode', theme === 'light'); themeToggles.forEach(toggle => {if(toggle) toggle.checked = (theme === 'light')}); }
         const savedTheme = localStorage.getItem('theme') || 'dark';
         applyTheme(savedTheme);
         themeToggles.forEach(toggle => { if(toggle) toggle.addEventListener('change', () => { const newTheme = toggle.checked ? 'light' : 'dark'; localStorage.setItem('theme', newTheme); applyTheme(newTheme); }); });
+        
         const hamburger = document.querySelector('.hamburger-menu');
         const mobileNav = document.querySelector('.mobile-nav');
         hamburger.addEventListener('click', () => { mobileNav.classList.toggle('open'); });
