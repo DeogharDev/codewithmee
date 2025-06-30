@@ -32,6 +32,7 @@
             <a href="admin-projects.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-project-diagram w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Projects</span></a>
             <a href="admin-gallery.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-images w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Gallery</span></a>
             <a href="admin-quiz.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-question-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Quiz</span></a>
+            <a href="admin-blog.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-blog w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Blog</span></a>
             <a href="admin-about.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-info-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">About Page</span></a>
             <a href="admin-links.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
             <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
@@ -50,8 +51,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Total Courses</h3><p class="text-4xl font-bold gold-text" id="course-count">0</p></div>
                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Total Projects</h3><p class="text-4xl font-bold gold-text" id="project-count">0</p></div>
-                <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Gallery Images</h3><p class="text-4xl font-bold gold-text" id="gallery-count">0</p></div>
-                <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Contact Messages</h3><p class="text-4xl font-bold gold-text" id="submission-count">0</p></div>
+                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Blog Posts</h3><p class="text-4xl font-bold gold-text" id="blog-count">0</p></div>
+                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Contact Messages</h3><p class="text-4xl font-bold gold-text" id="submission-count">0</p></div>
             </div>
             
             <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -74,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- To-Do List Section -->
             <div class="mt-10 bg-gray-800 p-6 rounded-lg">
                 <h3 class="text-xl font-bold mb-4">My To-Do List</h3>
                 <form id="todo-form" class="flex gap-4 mb-4">
@@ -117,6 +117,8 @@
         onSnapshot(collection(db, "projects"), (snapshot) => { document.getElementById('project-count').textContent = snapshot.size; });
         onSnapshot(collection(db, "gallery"), (snapshot) => { document.getElementById('gallery-count').textContent = snapshot.size; });
         onSnapshot(collection(db, "contactSubmissions"), (snapshot) => { document.getElementById('submission-count').textContent = snapshot.size; });
+        onSnapshot(collection(db, "blogPosts"), (snapshot) => { document.getElementById('blog-count').textContent = snapshot.size; });
+
 
         // To-Do List Logic
         async function loadTodos() {
