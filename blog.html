@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3YJ8K05RPH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3YJ8K05RPH');
+    </script>
     <style>
         :root { --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; --fz-lg: 32px; --fz-md: 20px; --fz-sm: 16px; --fz-xs: 14px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,9 +55,54 @@
         .read-more-btn { font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--gold); font-weight: 700; align-self: flex-start; }
         .read-more-btn:hover { text-decoration: underline; }
         footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
-        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
         .social-links a { display: inline-block; padding: 10px; font-size: 22px; color: var(--text-secondary); transition: all 0.3s ease; }
+        .social-links a.hidden { display: none; }
         .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
+        .search-container { position: relative; }
+        .search-icon { cursor: pointer; }
+        .search-box {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background-color: var(--medium-bg);
+            border: 1px solid var(--light-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            width: 250px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .search-box.active { display: block; }
+        .search-box input { width: 100%; background: var(--light-bg); border-radius: 4px; padding: 0.5rem; color: var(--text-primary); border: 1px solid transparent; }
+        .search-box input:focus { border-color: var(--gold); outline: none; }
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--medium-bg);
+            padding: 1rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+        .cookie-banner.active { display: flex; }
+        .cookie-banner p { margin: 0; }
+        .cookie-banner button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            color: var(--gold);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .cookie-banner button:hover { background-color: var(--gold); color: var(--dark-bg); }
         @media (max-width: 1080px) { main { padding: 0 100px; } }
         @media (max-width: 768px) {
             main { padding: 0 25px; } .content-section { padding-top: 120px; }
@@ -69,28 +122,36 @@
         <nav class="desktop-nav">
             <ol>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
                 <li><a href="courses.html">Courses</a></li>
-                <li><a href="projects.html">Projects</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="projects.html">Projects</a></li>
                 <li><a href="quiz.html">Quiz</a></li>
-                <li><a href="contact.html">Contact</a></li>
                 <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ol>
             <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
+            <div class="search-container ml-4">
+                <i class="fas fa-search search-icon text-xl text-gray-400 hover:text-gold transition-colors"></i>
+                <div class="search-box" id="search-box">
+                    <form id="search-form">
+                        <input type="search" id="search-input" placeholder="Search courses & blog...">
+                    </form>
+                </div>
+            </div>
         </nav>
         <button class="hamburger-menu"><span /><span /><span /></button>
     </header>
     <nav class="mobile-nav">
         <ol>
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
             <li><a href="courses.html">Courses</a></li>
-            <li><a href="projects.html">Projects</a></li>
             <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="projects.html">Projects</a></li>
             <li><a href="quiz.html">Quiz</a></li>
-            <li><a href="contact.html">Contact</a></li>
             <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ol>
         <div class="theme-switch-wrapper"><i class="fas fa-sun"></i><label class="theme-switch"><input type="checkbox" id="mobile-theme-toggle"><span class="slider round"></span></label><i class="fas fa-moon"></i></div>
     </nav>
@@ -104,15 +165,19 @@
     </main>
     <footer>
         <div class="social-links" id="social-links-container">
-            <a id="github-link" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a id="instagram-link" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a id="x-link" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
-            <a id="facebook-link" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a id="email-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <a id="github-link" target="_blank" aria-label="GitHub" class="hidden"><i class="fab fa-github"></i></a>
+            <a id="instagram-link" target="_blank" aria-label="Instagram" class="hidden"><i class="fab fa-instagram"></i></a>
+            <a id="x-link" target="_blank" aria-label="X" class="hidden"><i class="fab fa-x-twitter"></i></a>
+            <a id="facebook-link" target="_blank" aria-label="Facebook" class="hidden"><i class="fab fa-facebook"></i></a>
+            <a id="email-link" aria-label="Email" class="hidden"><i class="fas fa-envelope"></i></a>
             <a id="youtube-link" target="_blank" aria-label="YouTube" class="hidden"><i class="fab fa-youtube"></i></a>
         </div>
         <p>Designed & Built with Precision by Sunil Kumar</p>
     </footer>
+    <div id="cookie-banner" class="cookie-banner">
+        <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+        <button id="cookie-accept-btn">Accept</button>
+    </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -121,7 +186,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')].filter(Boolean);
         const body = document.body;
         function applyTheme(theme) { body.classList.toggle('light-mode', theme === 'light'); themeToggles.forEach(toggle => {if(toggle) toggle.checked = (theme === 'light')}); }
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -165,16 +230,32 @@
             const linksSnap = await getDoc(linksDocRef);
             if (linksSnap.exists()) {
                 const links = linksSnap.data();
-                document.getElementById('github-link').href = links.github || '#';
-                document.getElementById('instagram-link').href = links.instagram || '#';
-                document.getElementById('x-link').href = links.x || '#';
-                document.getElementById('facebook-link').href = links.facebook || '#';
-                document.getElementById('email-link').href = `mailto:${links.email || ''}`;
-                const ytLink = document.getElementById('youtube-link');
-                if(links.youtube) { ytLink.href = links.youtube; ytLink.classList.remove('hidden'); } 
-                else { ytLink.classList.add('hidden'); }
+                const socialLinks = { github: document.getElementById('github-link'), instagram: document.getElementById('instagram-link'), x: document.getElementById('x-link'), facebook: document.getElementById('facebook-link'), email: document.getElementById('email-link'), youtube: document.getElementById('youtube-link') };
+                for (const [key, element] of Object.entries(socialLinks)) {
+                    if (links[key] && links[key].trim() !== '') {
+                        element.href = key === 'email' ? `mailto:${links[key]}` : links[key];
+                        element.classList.remove('hidden');
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                }
             }
         }
+
+        const searchIcon = document.querySelector('.search-icon');
+        const searchBox = document.getElementById('search-box');
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+
+        searchIcon.addEventListener('click', (e) => { e.stopPropagation(); searchBox.classList.toggle('active'); if (searchBox.classList.contains('active')) { searchInput.focus(); } });
+        document.addEventListener('click', (e) => { if (!searchBox.contains(e.target) && e.target !== searchIcon) { searchBox.classList.remove('active'); } });
+        searchForm.addEventListener('submit', (e) => { e.preventDefault(); const query = searchInput.value.trim(); if (query) { window.location.href = `search.html?q=${encodeURIComponent(query)}`; } });
+        
+        const cookieBanner = document.getElementById('cookie-banner');
+        const cookieAcceptBtn = document.getElementById('cookie-accept-btn');
+        if (!localStorage.getItem('cookieConsent')) { cookieBanner.classList.add('active'); }
+        cookieAcceptBtn.addEventListener('click', () => { localStorage.setItem('cookieConsent', 'true'); cookieBanner.classList.remove('active'); });
+
         loadSocialLinks();
     </script>
 </body>
