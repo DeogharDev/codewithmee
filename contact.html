@@ -50,11 +50,9 @@
         #form-status.success { color: var(--success); }
         #form-status.error { color: var(--error); }
         footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
-        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
         .social-links a { display: inline-block; padding: 10px; font-size: 22px; color: var(--text-secondary); transition: all 0.3s ease; }
         .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
         @media (max-width: 768px) {
-            main { padding: 0 25px; }
             .desktop-nav { display: none; }
             .hamburger-menu { display: flex; flex-direction: column; justify-content: space-between; width: 30px; height: 21px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 21; }
             .hamburger-menu span { width: 30px; height: 3px; background: var(--text-primary); border-radius: 10px; }
@@ -127,15 +125,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc",
-            authDomain: "codewithmee-7cb9d.firebaseapp.com",
-            projectId: "codewithmee-7cb9d",
-            storageBucket: "codewithmee-7cb9d.appspot.com",
-            messagingSenderId: "19515490554",
-            appId: "1:19515490554:web:57bb1609cad1d61524c943",
-            measurementId: "G-3YJ8K05RPH"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyDbns1MdFW4nn8Sf0ROKnxidhIDSVYFUBc", authDomain: "codewithmee-7cb9d.firebaseapp.com", projectId: "codewithmee-7cb9d", storageBucket: "codewithmee-7cb9d.appspot.com", messagingSenderId: "19515490554", appId: "1:19515490554:web:57bb1609cad1d61524c943", measurementId: "G-3YJ8K05RPH" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -193,7 +183,7 @@
                 document.getElementById('facebook-link').href = links.facebook || '#';
                 document.getElementById('email-link').href = `mailto:${links.email || ''}`;
                 const ytLink = document.getElementById('youtube-link');
-                if(links.youtube) {
+                if(links.youtube && links.youtube.trim() !== '') {
                     ytLink.href = links.youtube;
                     ytLink.classList.remove('hidden');
                 } else {
