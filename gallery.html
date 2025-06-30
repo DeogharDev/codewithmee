@@ -37,13 +37,18 @@
         .hamburger-menu, .mobile-nav { display: none; }
         .content-section { padding-top: 150px; max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-        .gallery-item { cursor: pointer; overflow: hidden; border-radius: 8px; border: 1px solid var(--light-bg); aspect-ratio: 4 / 3;}
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+        .gallery-item { cursor: pointer; overflow: hidden; border-radius: 8px; border: 1px solid var(--light-bg); aspect-ratio: 4 / 3; background-color: var(--medium-bg); display: flex; align-items: center; justify-content: center;}
+        .gallery-item img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.4s ease; }
         .gallery-item:hover img { transform: scale(1.05); }
         .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
         .lightbox.active { opacity: 1; visibility: visible; }
-        .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .lightbox-close { position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+        .lightbox img { max-width: 85%; max-height: 80%; object-fit: contain; }
+        .lightbox-control { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 40px; cursor: pointer; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 50%; user-select: none; }
+        .lightbox-control:hover { background: rgba(0,0,0,0.6); }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        .lightbox-autoplay { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; font-size: 24px; cursor: pointer; background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 50px; }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
         footer { text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--text-secondary); }
         .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
         .social-links a { display: inline-block; padding: 10px; font-size: 22px; color: var(--text-secondary); transition: all 0.3s ease; }
@@ -100,6 +105,9 @@
     </main>
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close">&times;</span>
+        <a class="lightbox-control lightbox-prev">&#10094;</a>
+        <a class="lightbox-control lightbox-next">&#10095;</a>
+        <button class="lightbox-autoplay" id="autoplay-btn"><i class="fas fa-play"></i></button>
         <img class="lightbox-content" id="lightbox-img">
     </div>
     <footer>
@@ -128,8 +136,8 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
-        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')].filter(Boolean);
         const body = document.body;
         function applyTheme(theme) { body.classList.toggle('light-mode', theme === 'light'); themeToggles.forEach(toggle => {if(toggle) toggle.checked = (theme === 'light')}); }
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -143,28 +151,84 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryGrid = document.getElementById('gallery-grid');
-        
-        onSnapshot(query(collection(db, "gallery"), orderBy("createdAt", "desc")), (snapshot) => {
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+        const autoplayBtn = document.getElementById('autoplay-btn');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        let galleryImages = [];
+        let currentIndex = 0;
+        let autoplayInterval = null;
+
+        function renderGallery(images) {
             galleryGrid.innerHTML = '';
-            if (snapshot.empty) {
+            if (images.length === 0) {
                 galleryGrid.innerHTML = '<p class="col-span-full text-center text-gray-500">No images have been added to the gallery yet.</p>';
                 return;
             }
-            snapshot.forEach((doc) => {
-                const imageData = doc.data();
+            images.forEach((src, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
-                item.innerHTML = `<img src="${imageData.url}" alt="Gallery image" onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Image+Error';">`;
-                item.addEventListener('click', () => {
-                    lightboxImg.src = imageData.url;
-                    lightbox.classList.add('active');
-                });
+                item.innerHTML = `<img src="${src}" alt="Gallery image ${index + 1}" onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Image+Error';">`;
+                item.addEventListener('click', () => openLightbox(index));
                 galleryGrid.appendChild(item);
             });
-        });
+        }
+        
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('active');
+        }
 
-        document.querySelector('.lightbox-close').addEventListener('click', () => { lightbox.classList.remove('active'); });
-        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) { lightbox.classList.remove('active'); } });
+        function updateLightboxImage() {
+            if (galleryImages.length === 0) return;
+            lightboxImg.src = galleryImages[currentIndex];
+        }
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function showPrevImage() {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function toggleAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+                autoplayBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                autoplayInterval = setInterval(showNextImage, 3000);
+                autoplayBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+                autoplayBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+        
+        nextBtn.addEventListener('click', showNextImage);
+        prevBtn.addEventListener('click', showPrevImage);
+        autoplayBtn.addEventListener('click', toggleAutoplay);
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        onSnapshot(query(collection(db, "gallery"), orderBy("createdAt", "desc")), (snapshot) => {
+            galleryImages = [];
+            snapshot.forEach((doc) => {
+                galleryImages.push(doc.data().url);
+            });
+            renderGallery(galleryImages);
+        });
 
         async function loadSocialLinks() {
             const linksDocRef = doc(db, "siteContent", "socialLinks");
@@ -177,7 +241,7 @@
                 document.getElementById('facebook-link').href = links.facebook || '#';
                 document.getElementById('email-link').href = `mailto:${links.email || ''}`;
                 const ytLink = document.getElementById('youtube-link');
-                if(links.youtube) {
+                if(links.youtube && links.youtube.trim() !== '') {
                     ytLink.href = links.youtube;
                     ytLink.classList.remove('hidden');
                 } else {
