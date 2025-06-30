@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3YJ8K05RPH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3YJ8K05RPH');
+    </script>
     <style>
         :root {
             --dark-bg: #101010; --medium-bg: #181818; --light-bg: #282828; --gold: #D4AF37; --text-primary: #F5F5F5; --text-secondary: #A0A0A0; --font-sans: 'Manrope', sans-serif; --font-mono: 'JetBrains Mono', monospace; 
@@ -416,14 +424,11 @@
             }
         });
 
-        // Cookie Banner Logic
         const cookieBanner = document.getElementById('cookie-banner');
         const cookieAcceptBtn = document.getElementById('cookie-accept-btn');
-        
         if (!localStorage.getItem('cookieConsent')) {
             cookieBanner.classList.add('active');
         }
-
         cookieAcceptBtn.addEventListener('click', () => {
             localStorage.setItem('cookieConsent', 'true');
             cookieBanner.classList.remove('active');
