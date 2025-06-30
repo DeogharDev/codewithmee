@@ -36,7 +36,6 @@
             <a href="admin-links.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
             <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
             <a href="admin-accounts.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-user-shield w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Admin Accounts</span></a>
-            <a href="admin-blog.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-blog w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Blog</span></a>
         </nav>
         <div class="absolute bottom-4 left-4 right-4">
              <button id="logout-btn" class="w-full flex items-center p-3 rounded-lg bg-red-800 text-red-100 hover:bg-red-700"><i class="fas fa-sign-out-alt w-6 text-center"></i><span class="ml-4 font-semibold">Logout</span></button>
@@ -48,31 +47,41 @@
         <div id="dashboard-content">
             <h2 class="text-3xl font-bold mb-2">Welcome, Admin!</h2>
             <p class="text-gray-400 mb-8" id="admin-email"></p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Total Courses</h3><p class="text-4xl font-bold gold-text" id="course-count">0</p></div>
                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Total Projects</h3><p class="text-4xl font-bold gold-text" id="project-count">0</p></div>
-                 <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Gallery Images</h3><p class="text-4xl font-bold gold-text" id="gallery-count">0</p></div>
+                <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Gallery Images</h3><p class="text-4xl font-bold gold-text" id="gallery-count">0</p></div>
+                <div class="bg-gray-800 p-6 rounded-lg"><h3 class="text-lg font-semibold text-gray-400">Contact Messages</h3><p class="text-4xl font-bold gold-text" id="submission-count">0</p></div>
             </div>
-            <div class="mt-10 bg-gray-800 p-6 rounded-lg">
-                <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
-                <div class="flex flex-wrap gap-4">
-                    <a href="admin-courses.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Courses</a>
-                    <a href="admin-projects.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Projects</a>
-                    <a href="admin-quiz.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Quiz</a>
-                    <a href="admin-links.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Social Links</a>
-                    <a href="admin-accounts.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Admins</a>
-                    <a href="admin-blog.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Blog</a>
+            
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Quick Actions -->
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="admin-courses.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Courses</a>
+                        <a href="admin-blog.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Blog</a>
+                        <a href="admin-quiz.html" class="px-4 py-2 bg-yellow-600 rounded-md hover:bg-yellow-700">Manage Quiz</a>
+                    </div>
+                </div>
+                <!-- Website Analytics Card -->
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Website Analytics</h3>
+                    <p class="text-sm text-gray-400 mb-4">View detailed visitor statistics for your website.</p>
+                    <a href="https://codewithmeedeo.goatcounter.com" target="_blank" class="px-4 py-2 bg-blue-600 rounded-md hover:bg-blue-700 inline-flex items-center gap-2">
+                        <i class="fas fa-chart-line"></i> View Analytics Report
+                    </a>
                 </div>
             </div>
 
+            <!-- To-Do List Section -->
             <div class="mt-10 bg-gray-800 p-6 rounded-lg">
                 <h3 class="text-xl font-bold mb-4">My To-Do List</h3>
                 <form id="todo-form" class="flex gap-4 mb-4">
                     <input type="text" id="todo-input" class="flex-grow bg-gray-700 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Add a new task..." required>
                     <button type="submit" class="px-4 py-2 btn-primary rounded-md">Add Task</button>
                 </form>
-                <div id="todo-list" class="space-y-2">
-                    </div>
+                <div id="todo-list" class="space-y-2"></div>
             </div>
         </div>
     </main>
@@ -103,9 +112,11 @@
             } 
         });
 
+        // Live Counts for Dashboard Cards
         onSnapshot(collection(db, "courses"), (snapshot) => { document.getElementById('course-count').textContent = snapshot.size; });
         onSnapshot(collection(db, "projects"), (snapshot) => { document.getElementById('project-count').textContent = snapshot.size; });
         onSnapshot(collection(db, "gallery"), (snapshot) => { document.getElementById('gallery-count').textContent = snapshot.size; });
+        onSnapshot(collection(db, "contactSubmissions"), (snapshot) => { document.getElementById('submission-count').textContent = snapshot.size; });
 
         // To-Do List Logic
         async function loadTodos() {
@@ -121,10 +132,7 @@
                     const todo = doc.data();
                     const todoItem = document.createElement('div');
                     todoItem.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center todo-item';
-                    todoItem.innerHTML = `
-                        <span>${todo.text}</span>
-                        <button class="px-2 py-1 text-xs rounded btn-danger delete-todo-btn" data-id="${doc.id}">Delete</button>
-                    `;
+                    todoItem.innerHTML = `<span>${todo.text}</span><button class="px-2 py-1 text-xs rounded btn-danger delete-todo-btn" data-id="${doc.id}">Delete</button>`;
                     todoListEl.appendChild(todoItem);
                 });
             });
