@@ -38,6 +38,7 @@
             <a href="admin-projects.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-project-diagram w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Projects</span></a>
             <a href="admin-gallery.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-images w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Gallery</span></a>
             <a href="admin-quiz.html" class="sidebar-link active flex items-center p-3 rounded-lg"><i class="fas fa-question-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Quiz</span></a>
+            <a href="admin-blog.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-blog w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Blog</span></a>
             <a href="admin-about.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-info-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">About Page</span></a>
             <a href="admin-links.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
             <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
@@ -56,8 +57,8 @@
             <h3 class="text-xl font-bold mb-4 gold-text">Add New Question</h3>
             <form id="quiz-form" class="space-y-4">
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-400">Category</label>
-                    <input type="text" id="category" class="w-full mt-1 p-2 rounded-md form-input" placeholder="e.g., C++, Python, Java" required>
+                    <label for="category" class="block text-sm font-medium text-gray-400">Category (e.g., C++, Python, Java)</label>
+                    <input type="text" id="category" class="w-full mt-1 p-2 rounded-md form-input" placeholder="Enter a new or existing category" required>
                 </div>
                 <div>
                     <label for="question" class="block text-sm font-medium text-gray-400">Question</label>
@@ -65,9 +66,9 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><label for="option1" class="block text-sm font-medium text-gray-400">Option 1</label><input type="text" id="option1" class="w-full mt-1 p-2 rounded-md form-input" required></div>
-                    <div><label for="option2" class="block text-sm font-medium text-gray-400">Option 2</label><input type="text" id="option2" class="w-full mt-1 p-2 rounded-md form-input" required></div>
-                    <div><label for="option3" class="block text-sm font-medium text-gray-400">Option 3</label><input type="text" id="option3" class="w-full mt-1 p-2 rounded-md form-input" required></div>
-                    <div><label for="option4" class="block text-sm font-medium text-gray-400">Option 4</label><input type="text" id="option4" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                     <div><label for="option2" class="block text-sm font-medium text-gray-400">Option 2</label><input type="text" id="option2" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                     <div><label for="option3" class="block text-sm font-medium text-gray-400">Option 3</label><input type="text" id="option3" class="w-full mt-1 p-2 rounded-md form-input" required></div>
+                     <div><label for="option4" class="block text-sm font-medium text-gray-400">Option 4</label><input type="text" id="option4" class="w-full mt-1 p-2 rounded-md form-input" required></div>
                 </div>
                  <div>
                     <label for="correct-answer" class="block text-sm font-medium text-gray-400">Correct Answer</label>
@@ -122,7 +123,7 @@
                     document.getElementById('option4').value.trim()
                 ],
                 correctAnswer: parseInt(document.getElementById('correct-answer').value),
-                explanation: document.getElementById('explanation').value.trim(), // Added explanation
+                explanation: document.getElementById('explanation').value.trim(),
                 createdAt: serverTimestamp()
             };
             try {
