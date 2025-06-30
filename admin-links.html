@@ -13,7 +13,11 @@
         .gold-text { color: #D4AF37; }
         .sidebar { background-color: #2d3748; }
         .sidebar-link { transition: all 0.2s ease-in-out; }
-        .sidebar-link:hover, .sidebar-link.active { background-color: #D4AF37; color: #1a202c; transform: translateX(5px); }
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #D4AF37;
+            color: #1a202c;
+            transform: translateX(5px);
+        }
         .sidebar-link.active i, .sidebar-link:hover i { color: #1a202c; }
         .form-input { background-color: #4a5568; border: 1px solid #718096; }
         .form-input:focus { border-color: #D4AF37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); outline: none; }
@@ -32,6 +36,7 @@
             <a href="admin-projects.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-project-diagram w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Projects</span></a>
             <a href="admin-gallery.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-images w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Gallery</span></a>
             <a href="admin-quiz.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-question-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Quiz</span></a>
+            <a href="admin-blog.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-blog w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Blog</span></a>
             <a href="admin-about.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-info-circle w-6 text-center gold-text"></i><span class="ml-4 font-semibold">About Page</span></a>
             <a href="admin-links.html" class="sidebar-link active flex items-center p-3 rounded-lg"><i class="fas fa-link w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Social Links</span></a>
             <a href="admin-submissions.html" class="sidebar-link flex items-center p-3 rounded-lg"><i class="fas fa-envelope-open-text w-6 text-center gold-text"></i><span class="ml-4 font-semibold">Submissions</span></a>
@@ -47,7 +52,7 @@
         <h2 class="text-3xl font-bold mb-8">Manage Social & Contact Links</h2>
         
         <div class="bg-gray-800 p-6 rounded-lg">
-            <p class="text-sm text-gray-400 mb-6">Update the links here. They will automatically update across the entire public website's footer.</p>
+            <p class="text-sm text-gray-400 mb-6">Update the links here. They will automatically update across the entire public website.</p>
             <form id="links-form" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
